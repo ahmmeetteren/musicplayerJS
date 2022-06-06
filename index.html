@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,6 +9,7 @@
     <script src="https://kit.fontawesome.com/f6190b6e7c.js" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
+
 <body>
     <div class="container">
         <img id="music-img" src="" alt="">
@@ -24,15 +26,22 @@
             </div>
         </div>
         <div id="controls">
-            <i id="prev" class="fa-solid fa-backward"></i>
-            <i id="play" class="fa-solid fa-play"></i>
-            <i id="next" class="fa-solid fa-forward"></i>
+            <div>
+                <i id="prev" class="fa-solid fa-backward"></i>
+                <i id="play" class="fa-solid fa-play"></i>
+                <i id="next" class="fa-solid fa-forward"></i>
+            </div>
+            <div>
+                <i id="volume" class="fa-solid fa-volume-high"></i>
+                <input type="range" id="volume-bar" max="100" value="100">
+            </div>
         </div>
     </div>
-    
+
 
     <script src="music.js"></script>
     <script src="musicplayer.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>
