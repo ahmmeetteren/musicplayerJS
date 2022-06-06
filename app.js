@@ -1,12 +1,13 @@
 const container = document.querySelector(".container");
-const image = document.querySelector("#music-img");
+const image = document.querySelector("#music-image");
 const title = document.querySelector("#music-details .title");
 const singer = document.querySelector("#music-details .singer");
-const prev = document.querySelector("#controls #prev");
 const play = document.querySelector("#controls #play");
+const prev = document.querySelector("#controls #prev");
 const next = document.querySelector("#controls #next");
+const duration = document.querySelector("#duration");
+const currentTime = document.querySelector("#current-time");
 const progressBar = document.querySelector("#progress-bar");
-const currentTime = document.querySelector("#current-time")
 const volume = document.querySelector("#volume");
 const volumeBar = document.querySelector("#volume-bar");
 
@@ -18,7 +19,7 @@ window.addEventListener("load", () => {
 });
 
 function displayMusic(music) {
-    title.innerText = music.title;
+    title.innerText = music.getName();
     singer.innerText = music.singer;
     image.src = "img/" + music.img;
     audio.src = "mp3/" + music.file;
@@ -29,86 +30,84 @@ play.addEventListener("click", () => {
     isMusicPlay ? pauseMusic() : playMusic();
 });
 
-prev.addEventListener("click", () => {
-    prevMusic();
-});
+prev.addEventListener("click", () => { prevMusic(); });
 
-next.addEventListener("click", () => {
-    nextMusic();
-});
-function nextMusic() {
-    player.next();
-    let music = player.getMusic();
-    displayMusic(music);
-    playMusic();
-}
+next.addEventListener("click", () => { nextMusic(); });
 
-function prevMusic() {
+const prevMusic = () => {
     player.prev();
     let music = player.getMusic();
     displayMusic(music);
     playMusic();
 }
 
-function pauseMusic() {
+const nextMusic = () => {
+    player.next();
+    let music = player.getMusic();
+    displayMusic(music);
+    playMusic();
+}
+
+const pauseMusic = () => {
     container.classList.remove("playing");
-    play.classList = "fa-solid fa-play";
+    play.querySelector("i").classList = "fa-solid fa-play";
     audio.pause();
 }
-function playMusic() {
+
+const playMusic = () => {
     container.classList.add("playing");
-    play.classList = "fa-solid fa-pause";
+    play.querySelector("i").classList = "fa-solid fa-pause";
     audio.play();
 }
 
-function calculateTime(totalTime) {
-    const dakika = Math.floor(totalTime / 60);
-    const saniye = Math.floor(totalTime % 60);
-    const guncellenenSaniye = saniye < 10 ? `0${saniye}` : `${saniye}`;
+const calculateTime = (toplamSaniye) => {
+    const dakika = Math.floor(toplamSaniye / 60);
+    const saniye = Math.floor(toplamSaniye % 60);
+    const guncellenenSaniye = saniye < 10 ? `0${saniye}`: `${saniye}`;
     const sonuc = `${dakika}:${guncellenenSaniye}`;
     return sonuc;
 }
 
 audio.addEventListener("loadedmetadata", () => {
-    duration.innerText = calculateTime(audio.duration);
+    duration.textContent = calculateTime(audio.duration);
     progressBar.max = Math.floor(audio.duration);
 });
 
 audio.addEventListener("timeupdate", () => {
     progressBar.value = Math.floor(audio.currentTime);
-    currentTime.innerText = calculateTime(progressBar.value);
+    currentTime.textContent = calculateTime(progressBar.value);
 });
 
 progressBar.addEventListener("input", () => {
-    currentTime.innerText = calculateTime(progressBar.value);
+    currentTime.textContent = calculateTime(progressBar.value);
     audio.currentTime = progressBar.value;
 });
 
-let muteState = "voluble";
+let sesDurumu = "sesli";
 
 volumeBar.addEventListener("input", (e) => {
     const value = e.target.value;
     audio.volume = value / 100;
-    if (value == 0) {
+    if(value == 0) {
         audio.muted = true;
-        muteState = "muted";
+        sesDurumu = "sessiz";
         volume.classList = "fa-solid fa-volume-xmark";
     } else {
         audio.muted = false;
-        muteState = "voluble";
+        sesDurumu = "sesli";
         volume.classList = "fa-solid fa-volume-high";
     }
-})
+});
 
 volume.addEventListener("click", () => {
-    if (muteState === "voluble") {
+    if(sesDurumu==="sesli") {
         audio.muted = true;
-        muteState = "muted";
+        sesDurumu = "sessiz";
         volume.classList = "fa-solid fa-volume-xmark";
         volumeBar.value = 0;
     } else {
         audio.muted = false;
-        muteState = "voluble";
+        sesDurumu = "sesli";
         volume.classList = "fa-solid fa-volume-high";
         volumeBar.value = 100;
     }
