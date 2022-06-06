@@ -62,7 +62,7 @@ function playMusic(){
 function calculateTime(totalTime){
     const dakika = Math.floor(totalTime / 60);
     const saniye = Math.floor(totalTime % 60);
-    const guncellenenSaniye = totalTime < 10 ? `0${saniye}`: `${saniye}`;
+    const guncellenenSaniye = saniye < 10 ? `0${saniye}`: `${saniye}`;
     const sonuc = `${dakika}:${guncellenenSaniye}`;
     return sonuc;
 }
@@ -75,4 +75,9 @@ audio.addEventListener("loadedmetadata", () =>{
 audio.addEventListener("timeupdate", () =>{
     progressBar.value = Math.floor(audio.currentTime);
     currentTime.innerText = calculateTime(progressBar.value);
+})
+
+progressBar.addEventListener("input", () => {
+    currentTime.innerText = calculateTime(progressBar.value);
+    audio.currentTime = progressBar.value;
 })
